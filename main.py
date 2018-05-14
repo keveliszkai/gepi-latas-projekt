@@ -44,6 +44,9 @@ def checkImage(frame, date):
 		subprocess.run(command)
 		print("Person")
 	else:
+		cv2.imwrite(database_folder + '/others/' + date + '_o.png',frame)
+		command = ['cp', darknet_folder + 'predictions.png', database_folder + '/person/' + date + '.png']
+		subprocess.run(command)
 		print("Nothing")
 
 	
@@ -118,15 +121,12 @@ if __name__ == '__main__':
 		cv2.putText(frame, date,
 			(10, frame.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.35, (0, 0, 255), 1)
 
-		# show the frame and record if the user presses a key
-		cv2.imshow("Security Feed", frame)
-		#cv2.imshow("Thresh", thresh)
-		#cv2.imshow("Frame Delta", frameDelta)
+		# show the camera
+		cv2.imshow("Camera", frame)
 		key = cv2.waitKey(1) & 0xFF
 
-		firstFrame = gray
-
 		if (wait.exitcode != None and checking.exitcode != None):
+			firstFrame = gray
 			if (change):
 				cv2.imwrite('img.png',frame)
 				time.sleep(0.20)

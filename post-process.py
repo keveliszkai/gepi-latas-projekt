@@ -27,6 +27,10 @@ def checkImage(frame, filename):
 	p.wait()
 	output = p.stdout.read().decode("utf-8")
 	print("Output: "+output)
+	
+	# predictions
+	pred = cv2.imread(darknet_folder + 'predictions.png')
+	cv2.imshow("Predictions", pred)
 
 	# cat
 	if "cat" in output:
@@ -48,10 +52,15 @@ def checkImage(frame, filename):
 		subprocess.run(command)
 		print("Nothing")
 
+	#log
+	with open("log.log", "a") as myfile:
+    		myfile.write(name + " - " + output)
+
 	print("FINISHED - "+datetime.datetime.now().strftime("%A %d %B %Y %I:%M:%S%p"))
 
 if __name__ == '__main__':
 	for filename in os.listdir(input_folder):
 		img = cv2.imread(filename)
+		cv2.imshow("Picture", img)
 		checkImage(img, filename)
 
